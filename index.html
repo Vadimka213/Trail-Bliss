@@ -8,13 +8,13 @@
   </head>
   <body class="page">
     <header class="top">
-      <nav class="nav">
-        <ul class="nav-links">
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav-links nav-left">
           <li><a href="#">Home</a></li>
-          <li><a href="#">Pricing</a></li>
-          <li><a href="#">Blog</a></li>
+          <li><a href="#events">Pricing</a></li>
+          <li><a href="#adventures">Blog</a></li>
         </ul>
-        <a class="brand" href="#">
+        <a class="brand" href="#" aria-label="Trail Bliss home">
           <img alt="Trail Bliss logo" src="./img/logo.png" />
           <span>Trail Bliss</span>
         </a>
@@ -23,8 +23,23 @@
           <li><a href="#faq">FAQ</a></li>
           <li><a class="contact-btn" href="#contact">Contact Us</a></li>
         </ul>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </header>
+
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <button class="mobile-menu-close" type="button" aria-label="Close menu">&times;</button>
+      <nav class="mobile-menu-panel" aria-label="Mobile navigation">
+        <a href="#">Home</a>
+        <a href="#events">Pricing</a>
+        <a href="#adventures">Blog</a>
+        <a href="#testimonials">Testimonial</a>
+        <a href="#faq">FAQ</a>
+        <a class="mobile-contact" href="#contact">Contact Us</a>
+      </nav>
+    </div>
     <main>
       <section class="hero">
         <section class="hero-head">
@@ -411,5 +426,45 @@
         </nav>
       </section>
     </footer>
+
+    <script>
+      (() => {
+        const menu = document.querySelector(".mobile-menu");
+        const openButton = document.querySelector(".menu-toggle");
+        const closeButton = document.querySelector(".mobile-menu-close");
+        const menuLinks = menu.querySelectorAll("a");
+
+        function openMenu() {
+          menu.classList.add("is-open");
+          menu.setAttribute("aria-hidden", "false");
+          openButton.setAttribute("aria-expanded", "true");
+          document.body.classList.add("menu-open");
+          closeButton.focus();
+        }
+
+        function closeMenu() {
+          menu.classList.remove("is-open");
+          menu.setAttribute("aria-hidden", "true");
+          openButton.setAttribute("aria-expanded", "false");
+          document.body.classList.remove("menu-open");
+          openButton.focus();
+        }
+
+        openButton.addEventListener("click", openMenu);
+        closeButton.addEventListener("click", closeMenu);
+        menu.addEventListener("click", (event) => {
+          if (event.target === menu) closeMenu();
+        });
+        menuLinks.forEach((link) => link.addEventListener("click", () => {
+          menu.classList.remove("is-open");
+          menu.setAttribute("aria-hidden", "true");
+          openButton.setAttribute("aria-expanded", "false");
+          document.body.classList.remove("menu-open");
+        }));
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && menu.classList.contains("is-open")) closeMenu();
+        });
+      })();
+    </script>
   </body>
 </html>
